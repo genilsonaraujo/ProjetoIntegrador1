@@ -2,10 +2,11 @@
 
 
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Produto
-from .serializers import ProdutoSerializer
+from .models import Produto, Saida
+from .serializers import ProdutoSerializer, SaidaSerializer
 #class ProdutoViewSet(viewsets.ModelViewSet):
     #queryset = Produto.objects.all()
     #serializer_class = ProdutoSerializer
@@ -81,3 +82,43 @@ class ProdutoDetailAPIView(APIView):
 #PUT: http://127.0.0.1:8000/produte/1/ (para atualizar completamente o produto).
 #PATCH: http://127.0.0.1:8000/produte/1/ (para atualizar parcialmente o produto).
 #DELETE: http://127.0.0.1:8000/produte/1/ (para excluir o produto)
+class SaidaList(generics.ListCreateAPIView):
+    queryset = Saida.objects.all()
+    serializer_class = SaidaSerializer
+
+class SaidaDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Saida.objects.all()
+    serializer_class = SaidaSerializer
+
+    def post(self, request, *args, **kwargs):
+        # Use o serializer para validar e criar a saída
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def get(self, request, pk):
+        saida = self.get_object()
+        serializer = self.get_serializer(saida)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        saida = self.get_object()
+        serializer = self.get_serializer(saida, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk):
+        saida = self.get_object()
+        serializer = self.get_serializer(saida, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        saida = self.get_object()
+        saida.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

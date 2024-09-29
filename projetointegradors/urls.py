@@ -18,7 +18,7 @@ Including another URLconf
 from django.urls import path, include
 from . import views
 from rest_framework.routers import DefaultRouter
-from .api_views import ProdutoListCreateAPIView, ProdutoDetailAPIView
+from .api_views import ProdutoListCreateAPIView, ProdutoDetailAPIView, SaidaList, SaidaDetail
 #from .views import lista_produtos, cria_produto
 from django.conf import settings
 from django.conf.urls.static import static
@@ -47,6 +47,8 @@ urlpatterns = [ #ROTAS
     path('busca_produtos/', views.busca_produtos, name='busca_produtos'),
     path('produte/', ProdutoListCreateAPIView.as_view(), name='produto-list-create'),#API, Dá um nome à rota para facilitar sua referência em outras partes do código, como templates ou redirecionamentos.
     path('produte/<int:pk>/', ProdutoDetailAPIView.as_view(), name='produto-detail'),#rota produto id
+    path('saidas/', SaidaList.as_view(), name='saida-list'),
+    path('saidas/<int:pk>/', SaidaDetail.as_view(), name='saida-detail'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

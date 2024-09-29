@@ -62,7 +62,11 @@ MIDDLEWARE = [
 ]
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',  # URL da aplicação React
+
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True  # Permite todas as origens, altere conforme necessário para maior segurança
+
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
