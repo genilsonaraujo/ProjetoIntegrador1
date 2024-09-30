@@ -1,17 +1,25 @@
 from rest_framework import serializers
 from .models import Produto, Saida, ItemSaida
+
 class ProdutoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Produto
-        fields = '__all__'  # ou especifique os campos manualmente
-        #fields = ['nome']
-
+        fields = '__all__'
 
 class ItemSaidaSerializer(serializers.ModelSerializer):
-    produto_nome = serializers.CharField(source='produto.nome', read_only=True)  # Adiciona o nome do produto
+    produto_nome = serializers.CharField(source='produto.nome', read_only=True)
+
     class Meta:
         model = ItemSaida
-        fields = ['id', 'produto_nome', 'quantidade', 'preco_total']  # Inclua o campo produto_nome
+        fields = ['id', 'produto', 'produto_nome', 'quantidade', 'preco_total']
+
+    def create(self, validated_data):
+        # Supondo que o produto está incluído nos dados validados
+        produto = validated_data['produto']
+        quantidade = validated_data['quantidade']
+        # Calcule o preço total
+        validated_data['preco_total'] = produto.preco * quantidade  # Substitua 'preco' pelo campo correto no seu modelo
+        return super().create(validated_data)
 
 class SaidaSerializer(serializers.ModelSerializer):
     itens = ItemSaidaSerializer(many=True)
