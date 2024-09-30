@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-xpy&s4#c1_xpdtbv(w92*9nn(tc)y!*z@_1m^kn1bin-$ja8im
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['backendestoquefacil-dtdjdsh3f5gzbcgu.canadacentral-01.azurewebsites.net', 'localhost']
 
 
