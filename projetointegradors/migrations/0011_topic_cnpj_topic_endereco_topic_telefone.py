@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='topic',
             name='cnpj',
-            field=models.CharField(default='00.000.000/0000-00', max_length=20),
+            field=models.CharField(default='00.000.000/0000-00', max_length=14),
         ),
         migrations.AddField(
             model_name='topic',
