@@ -23,6 +23,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='topic',
             name='telefone',
-            field=models.CharField(default='(00) 0000-0000', max_length=10),
+            field=models.CharField(default='(00) 0000-0000', max_length=15),
         ),
     ]
