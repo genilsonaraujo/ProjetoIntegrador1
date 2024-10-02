@@ -6,9 +6,9 @@ from django.db import models
 class Topic(models.Model): #topico tabela no banco de dados
     text = models.CharField(max_length=200)#define quant max de caracteres
     date_added = models.DateTimeField(auto_now_add=True)#herda de models e define horario p/ os dados
-    endereco = models.CharField(max_length=200, default='Endereço Padrão')
-    cnpj = models.CharField(max_length=20, default='00.000.000/0000-00')
-    telefone = models.CharField(max_length=10, default='(00) 0000-0000')
+    endereco = models.CharField(max_length=255, default='Endereço Padrão')
+    cnpj = models.CharField(max_length=14, default='00.000.000/0000-00')
+    telefone = models.CharField(max_length=15, default='(00) 0000-0000')
     
 
 
