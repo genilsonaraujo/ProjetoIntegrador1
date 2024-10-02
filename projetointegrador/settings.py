@@ -17,9 +17,9 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))#remover qualquer coisa
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'  #MEDIA_URL: URL base para acessar arquivos de mídia (uploads de usuários).
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')#MEDIA_ROOT: Diretório onde os arquivos de mídia enviados pelos usuários serão armazenados.
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
