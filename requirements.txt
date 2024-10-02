@@ -94,6 +94,7 @@ wheel>=0.37.0
 pyzmq
 django-heroku
 djangorestframework
+corsheaders
 
 
 
