@@ -96,6 +96,7 @@ django-heroku
 djangorestframework
 django-cors-headers
 dj-database-url
+djangorestframework-simplejwt
 
 
 
