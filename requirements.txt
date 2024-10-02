@@ -92,6 +92,8 @@ Cython==0.29.36
 setuptools>=58.0.4
 wheel>=0.37.0
 pyzmq
+django-heroku
+
 
 
 
