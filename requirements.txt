@@ -91,7 +91,8 @@ websocket-client==1.5.1
 gunicorn
 psycopg2-binary
 Cython==0.29.36
-PyYAML==6.0 --no-build-isolation
+PyYAML
+
 
 
 
