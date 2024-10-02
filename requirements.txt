@@ -91,7 +91,6 @@ websocket-client==1.5.1
 gunicorn
 psycopg2-binary
 Cython==0.29.36
-PyYAML
 setuptools>=58.0.4
 wheel>=0.37.0
 
