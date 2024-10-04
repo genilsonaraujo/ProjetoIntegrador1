@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security settings
 SECRET_KEY = 'django-insecure-xpy&s4#c1_xpdtbv(w92*9nn(tc)y!*z@_1m^kn1bin-$ja8im'
 DEBUG = False
-ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['.herokuapp.com', 'https://api-django-4b2c63e2dc99.herokuapp.com/', 'localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -55,9 +55,9 @@ MIDDLEWARE = [
 
 ]
 
-#CORS_ALLOWED_ORIGINS = [
-    #'http://localhost:5173',
-#]
+CORS_ALLOWED_ORIGINS = [
+    'https://icy-glacier-05fc3a41e.5.azurestaticapps.net/',
+]
 
 CORS_ORIGIN_ALLOW_ALL = True
 
