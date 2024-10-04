@@ -14,13 +14,13 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Static files (CSS, JavaScript, Images)
-#STATIC_URL = '/static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'projetointegradors/static')]
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'projetointegradors/static')]
 
 # Media files
-#MEDIA_URL = '/media/'
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Security settings
 SECRET_KEY = 'django-insecure-xpy&s4#c1_xpdtbv(w92*9nn(tc)y!*z@_1m^kn1bin-$ja8im'
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'bootstrap5',
     'rest_framework',
     'corsheaders',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -52,8 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'whitenoise.runserver_nostatic',
-]
+]  
 
 CORS_ALLOWED_ORIGINS = [
     #"https://api-django-4b2c63e2dc99.herokuapp.com",
