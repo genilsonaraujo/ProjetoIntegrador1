@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
+    'whitenoise.runserver_nostatic',
 ]
 
 CORS_ALLOWED_ORIGINS = [
