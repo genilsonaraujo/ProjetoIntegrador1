@@ -1,3 +1,3 @@
-web: gunicorn projetointegrador.wsgi --log-file -
+web: gunicorn projetointegradorsgit add.wsgi --log-file -
 
 
