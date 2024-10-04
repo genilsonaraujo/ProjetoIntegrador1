@@ -101,8 +101,7 @@ DATABASES = {
 }
 
 if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.config(default=os.environ.get('postgres://u12esep5eo2ris:pa6a33ee4ce9a57bf669b44c669d1bf5e69e9a6ac7e5694a172aafeb86cef29e8@cfls9h51f4i86c.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/dfhsshk8bih7bd'), conn_max_age=600, ssl_require=True)
-
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
