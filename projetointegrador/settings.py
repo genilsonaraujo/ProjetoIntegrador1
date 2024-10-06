@@ -27,7 +27,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Security settings
 SECRET_KEY = 'django-insecure-xpy&s4#c1_xpdtbv(w92*9nn(tc)y!*z@_1m^kn1bin-$ja8im'
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['api-django-4b2c63e2dc99.herokuapp.com', 'localhost', '127.0.0.1']
 
 
