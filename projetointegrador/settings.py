@@ -60,8 +60,9 @@ MIDDLEWARE = [
 ]  
 
 CORS_ALLOWED_ORIGINS = [
-    #"https://api-django-4b2c63e2dc99.herokuapp.com",
-    'https://icy-glacier-05fc3a41e.5.azurestaticapps.net',
+    'https://icy-glacier-05fc3a41e.5.azurestaticapps.net',  # Azure
+    'https://api-django-4b2c63e2dc99.herokuapp.com',  # Heroku (se necessário)
+    'http://localhost:5173',  # Se estiver testando localmente com React
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
