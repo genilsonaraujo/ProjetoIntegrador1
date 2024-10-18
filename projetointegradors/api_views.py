@@ -1,124 +1,112 @@
-
-
-
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Produto, Saida
+from django.http import Http404
+from .models import Produto, Saida, ItemSaida
 from .serializers import ProdutoSerializer, SaidaSerializer
-#class ProdutoViewSet(viewsets.ModelViewSet):
-    #queryset = Produto.objects.all()
-    #serializer_class = ProdutoSerializer
+
 class ProdutoListCreateAPIView(APIView):
     def get(self, request):
+        # Recupera todos os produtos do banco de dados
         produtos = Produto.objects.all()
+        # Serializa a lista de produtos
         serializer = ProdutoSerializer(produtos, many=True)
+        # Retorna os produtos serializados como resposta
         return Response(serializer.data)
 
     def post(self, request):
+        # Valida os dados recebidos para criar um novo produto
         serializer = ProdutoSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    
-# ProdutoSerializer está configurado para converter instâncias do modelo Produto em JSON e vice-versa, 
-# permitindo a manipulação fácil dos dados na sua API.  Explicação do Código:
-#Método get:
-#Recupera todos os objetos Produto do banco de dados usando Produto.objects.all().
-##Usa o ProdutoSerializer com many=True para serializar vários objetos.
-#Retorna a resposta JSON dos produtos serializados.
-#Método post:
-#Recebe os dados do request e os passa para o ProdutoSerializer para validação.
-##Se os dados forem válidos, o serializer chama serializer.save() para criar e salvar um novo objeto Produto.
-#Retorna os dados do novo produto criado com status HTTP 201 (Created).
-#Se os dados não forem válidos, retorna os erros de validação com status HTTP 400 (Bad Request).
-
+            serializer.save()  # Salva o novo produto no banco de dados
+            return Response(serializer.data, status=status.HTTP_201_CREATED)  # Retorna o produto criado
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # Retorna erros de validação
 
 class ProdutoDetailAPIView(APIView):
     def get_object(self, pk):
+        # Método auxiliar para obter um produto pelo ID
         try:
             return Produto.objects.get(pk=pk)
         except Produto.DoesNotExist:
-            raise Http404
+            raise Http404  # Levanta um erro 404 se o produto não for encontrado
 
     def get(self, request, pk):
+        # Obtém um produto específico
         produto = self.get_object(pk)
         serializer = ProdutoSerializer(produto)
-        return Response(serializer.data)
+        return Response(serializer.data)  # Retorna os dados do produto
 
     def put(self, request, pk):
+        # Atualiza completamente um produto
         produto = self.get_object(pk)
         serializer = ProdutoSerializer(produto, data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save()  # Salva as alterações no produto
+            return Response(serializer.data)  # Retorna os dados atualizados
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # Retorna erros de validação
 
     def patch(self, request, pk):
+        # Atualiza parcialmente um produto
         produto = self.get_object(pk)
         serializer = ProdutoSerializer(produto, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save()  # Salva as alterações no produto
+            return Response(serializer.data)  # Retorna os dados atualizados
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # Retorna erros de validação
 
     def delete(self, request, pk):
+        # Remove um produto específico
         produto = self.get_object(pk)
-        produto.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-    
-#get(self, request, pk): Obtém um produto específico por id.
-#put(self, request, pk): Atualiza completamente um produto (substitui todos os campos).
-#patch(self, request, pk): Atualiza parcialmente um produto (modifica apenas os campos fornecidos).
-#delete(self, request, pk): Remove o produto específico.
-#get_object(self, pk): Método auxiliar para encontrar o produto pelo id, e levanta um Http404 se não for encontrado
+        produto.delete()  # Exclui o produto do banco de dados
+        return Response(status=status.HTTP_204_NO_CONTENT)  # Retorna resposta 204 No Content
 
-#Para  testar os métodos PATCH, PUT, e DELETE no Insomnia ou no Postman usando a URL /produte/<id>/. Por exemplo:
-
-#GET: http://127.0.0.1:8000/produte/1/ (para obter um produto).
-#PUT: http://127.0.0.1:8000/produte/1/ (para atualizar completamente o produto).
-#PATCH: http://127.0.0.1:8000/produte/1/ (para atualizar parcialmente o produto).
-#DELETE: http://127.0.0.1:8000/produte/1/ (para excluir o produto)
 class SaidaList(generics.ListCreateAPIView):
-    queryset = Saida.objects.all()
-    serializer_class = SaidaSerializer
+    queryset = Saida.objects.all()  # Define a queryset para saídas
+    serializer_class = SaidaSerializer  # Define o serializer para a saída
+
+    def perform_create(self, serializer):
+        # Método chamado quando uma saída é criada
+        saida = serializer.save()  # Salva a saída no banco de dados
+        # Atualiza o estoque dos produtos relacionados
+        for item in saida.itens.all():
+            produto = Produto.objects.get(id=item.produto.id)  # Obtém o produto relacionado
+            produto.quantidade -= item.quantidade  # Decrementa a quantidade do produto
+            produto.save()  # Salva as alterações no produto
 
 class SaidaDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Saida.objects.all()
-    serializer_class = SaidaSerializer
-
-    def post(self, request, *args, **kwargs):
-        # Use o serializer para validar e criar a saída
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    queryset = Saida.objects.all()  # Define a queryset para saídas
+    serializer_class = SaidaSerializer  # Define o serializer para a saída
 
     def get(self, request, pk):
+        # Obtém uma saída específica
         saida = self.get_object()
         serializer = self.get_serializer(saida)
-        return Response(serializer.data)
+        return Response(serializer.data)  # Retorna os dados da saída
 
     def put(self, request, pk):
+        # Atualiza completamente uma saída
         saida = self.get_object()
         serializer = self.get_serializer(saida, data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save()  # Salva as alterações na saída
+            return Response(serializer.data)  # Retorna os dados atualizados
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # Retorna erros de validação
 
     def patch(self, request, pk):
+        # Atualiza parcialmente uma saída
         saida = self.get_object()
         serializer = self.get_serializer(saida, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save()  # Salva as alterações na saída
+            return Response(serializer.data)  # Retorna os dados atualizados
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # Retorna erros de validação
 
     def delete(self, request, pk):
+        # Remove uma saída específica
         saida = self.get_object()
-        saida.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        saida.delete()  # Exclui a saída do banco de dados
+        return Response(status=status.HTTP_204_NO_CONTENT)  # Retorna resposta 204 No Content
+
+
+
