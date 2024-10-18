@@ -43,7 +43,7 @@ class SaidaDetail(generics.RetrieveUpdateDestroyAPIView):
             for item in serializer.validated_data['itens']:
                 produto = Produto.objects.get(id=item['produto'].id)
                 quantidade_nova = item['quantidade']
-                
+
                 # Verifica se a quantidade mudou e ajusta
                 if item['produto'].id in old_items:
                     quantidade_antiga = old_items[item['produto'].id]
@@ -65,6 +65,7 @@ class SaidaDetail(generics.RetrieveUpdateDestroyAPIView):
             produto.save()  # Salva as alterações no produto
         saida.delete()  # Exclui a saída do banco de dados
         return Response(status=status.HTTP_204_NO_CONTENT)  # Retorna resposta 204 No Content
+
 
 
 
