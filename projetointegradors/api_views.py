@@ -65,4 +65,43 @@ class SaidaDetail(generics.RetrieveUpdateDestroyAPIView):
             produto.save()  # Salva as alterações no produto
         saida.delete()  # Exclui a saída do banco de dados
         return Response(status=status.HTTP_204_NO_CONTENT)  # Retorna resposta 204 No Content
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import Produto
+
+class CurvaABCView(APIView):
+    def get(self, request, *args, **kwargs):
+        produtos = Produto.objects.all()
+        total_geral = 0
+
+        # Calculando o valor total de cada produto (preço * quantidade)
+        valores_produtos = []
+        for produto in produtos:
+            valor_total = produto.preco * produto.quantidade
+            total_geral += valor_total
+            valores_produtos.append({
+                'nome': produto.nome,
+                'valor_total': valor_total
+            })
+        
+        # Ordenando produtos pelo valor total (maior para menor)
+        valores_produtos.sort(key=lambda x: x['valor_total'], reverse=True)
+
+        # Calculando o percentual acumulado
+        percentual_acumulado = 0
+        for produto in valores_produtos:
+            percentual = (produto['valor_total'] / total_geral) * 100
+            percentual_acumulado += percentual
+            produto['percentual_acumulado'] = percentual_acumulado
+
+        # Classificando em A, B ou C
+        for produto in valores_produtos:
+            if produto['percentual_acumulado'] <= 80:
+                produto['classe'] = 'A'
+            elif produto['percentual_acumulado'] <= 95:
+                produto['classe'] = 'B'
+            else:
+                produto['classe'] = 'C'
+
+        return Response(valores_produtos)
 
