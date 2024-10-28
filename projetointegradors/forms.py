@@ -71,7 +71,7 @@ class SaidaForm(forms.ModelForm):
 class ItemSaidaForm(forms.ModelForm):
     class Meta:
         model = ItemSaida
-        fields = ['produto', 'quantidade']
+        fields = ['produto', 'quantidade', 'preco_unitario']
 
 
 
