@@ -2,7 +2,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('projetointegradors', '0013_previous_migration_name'),  # Atualize para o número correto da última migração
+        ('projetointegradors', '0014_previous_migration_name'),  # Atualize para o número correto da última migração
     ]
 
     operations = [
