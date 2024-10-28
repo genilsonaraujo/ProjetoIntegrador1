@@ -111,6 +111,7 @@ class ItemSaida(models.Model):
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     quantidade = models.IntegerField()
     preco_total = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    preco_unitario = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
 
     def __str__(self):
         return f"Item da Saída #{self.pk}"
