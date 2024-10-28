@@ -11,7 +11,7 @@ class ItemSaidaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ItemSaida
-        fields = ['id', 'produto', 'produto_nome', 'quantidade', 'preco_total']
+        fields = ['id', 'produto', 'produto_nome', 'quantidade', 'preco_unitario', 'preco_total']
 
     def create(self, validated_data):
         # Supondo que o produto está incluído nos dados validados
