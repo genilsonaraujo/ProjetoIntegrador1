@@ -1,8 +1,8 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Produto, Saida
-from .serializers import ProdutoSerializer, SaidaSerializer
+from .models import Produto, Saida 
+from .serializers import ProdutoSerializer, SaidaSerializer 
 from django.http import Http404
 
 class ProdutoListCreateAPIView(generics.ListCreateAPIView):
@@ -65,6 +65,9 @@ class SaidaDetail(generics.RetrieveUpdateDestroyAPIView):
             produto.save()  # Salva as alterações no produto
         saida.delete()  # Exclui a saída do banco de dados
         return Response(status=status.HTTP_204_NO_CONTENT)  # Retorna resposta 204 No Content
+    
+
+
 
 
 

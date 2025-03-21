@@ -5,6 +5,7 @@ from .forms import TopicForm, EntryForm, ProdutoForm, SaidaForm, ItemSaidaForm, 
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required#permite so quem estiver logado ter acesso as viwes
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 def index(request): #pega o as informaçoes e renderiza numa pagina html
     """Pagina principal do Projetointegradors"""
@@ -85,7 +86,7 @@ def edit_entry(request, entry_id):
 
 
 
-
+@csrf_exempt  #  Isso desativa o CSRF para essa view
 @login_required#RESTRICAO DA PAGINA
 def lista_produtos(request):
     #primeira busca de produtos

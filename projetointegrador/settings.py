@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-xpy&s4#c1_xpdtbv(w92*9nn(tc)y!*z@_1m^kn1bin-$ja8im
 DEBUG = True
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['backendestoquefacil-dtdjdsh3f5gzbcgu.canadacentral-01.azurewebsites.net', 'localhost']
+ALLOWED_HOSTS = ['backendestoquefacil-dtdjdsh3f5gzbcgu.canadacentral-01.azurewebsites.net', 'localhost', '192.168.15.9','192.168.1*.*']
 
 
 
@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'projetointegradors',#criando o AP
     'users',
     #app de terceiro
-    'bootstrap5', 
+    #'bootstrap5', 
+    'django_bootstrap5',
     'rest_framework',
     'corsheaders',
 ]
@@ -64,7 +65,11 @@ MIDDLEWARE = [
 ]
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',  # URL da aplicação React
-
+    'http://192.168.15.9:8000',
+    'http://localhost:8000',
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://192.168.15.9:8000",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True  # Permite todas as origens, altere conforme necessário para maior segurança
@@ -174,8 +179,11 @@ django_heroku.settings(locals())
 #Autenticação para uso do React
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+    #'rest_framework.permissions.AllowAny',
     ),
+    'DEFAULT_PERMISSION_CLASSES': [#'rest_framework.permissions.AllowAny',],
+    ]
 }
 
 from datetime import timedelta

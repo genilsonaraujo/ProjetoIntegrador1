@@ -4,3 +4,6 @@ from projetointegradors.models import Topic, Entry, Produto #importa a class top
 admin.site.register(Topic) #cria topicos
 admin.site.register(Entry)
 admin.site.register(Produto)
+class ProdutoAdmin(admin.ModelAdmin):
+    list_display = ['nome', 'codigo_barras', 'preco']
+    search_fields = ['nome', 'codigo_barras']

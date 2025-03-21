@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Produto, Saida, ItemSaida
+from .models import Produto, Saida, ItemSaida 
 
 class ProdutoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,3 +34,4 @@ class SaidaSerializer(serializers.ModelSerializer):
         for item_data in itens_data:
             ItemSaida.objects.create(saida=saida, **item_data)
         return saida
+

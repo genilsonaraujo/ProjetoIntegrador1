@@ -49,6 +49,8 @@ urlpatterns = [ #ROTAS
     path('produte/<int:pk>/', ProdutoDetailAPIView.as_view(), name='produto-detail'),#rota produto id
     path('saidas/', SaidaList.as_view(), name='saida-list'),
     path('saidas/<int:pk>/', SaidaDetail.as_view(), name='saida-detail'),
+
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

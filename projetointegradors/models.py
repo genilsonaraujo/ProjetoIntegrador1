@@ -56,6 +56,7 @@ class Produto(models.Model):
         blank=False,
         default='Sem Marca'
     )
+    codigo_barras = models.CharField(max_length=50, unique=True, blank=True, null=True)
     codigo = models.CharField(
         max_length=20,
         null=False,
@@ -83,12 +84,13 @@ class Produto(models.Model):
 def __str__(self):
     return self.name
 
-def editar_produto(self, novo_nome, novo_modelo, nova_marca, nova_categoria, novo_codigo, novo_existente, novo_sku, novo_preco, nova_quantidade):
+def editar_produto(self, novo_nome, novo_modelo, nova_marca, nova_categoria, novo_codigo_barras, novo_codigo, novo_existente, novo_sku, novo_preco, nova_quantidade):
         # Atualize os campos conforme necessário
         self.nome = novo_nome
         self.modelo = novo_modelo
         self.marca = nova_marca
         self.categoria = nova_categoria
+        self.codigo_barras = novo_codigo_barras
         self.codigo = novo_codigo
         self.existente = novo_existente
         self.sku = novo_sku
@@ -114,3 +116,4 @@ class ItemSaida(models.Model):
 
     def __str__(self):
         return f"Item da Saída #{self.pk}"
+    

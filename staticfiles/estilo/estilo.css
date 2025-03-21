@@ -1,0 +1,57 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background-color: black;
+}
+
+main {
+    flex: 1 0 auto;
+}
+.nav{
+    background-color: rgb(252, 246, 246);
+}
+
+footer{
+    background-color: rgb(4, 7, 7);
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    position: relative;
+    color:rgb(10, 10, 10);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.h1{
+    color: aliceblue;
+}
+
+.color-text {
+    color: #ece4e4; /* Cor do TEXTO DA NAV BAR */
+}
+.cor-de-fundo {
+    background-color: #e1e1e4; /* Substitua pela cor desejada */
+}
+
+/* Estilos para o corpo da página home */
+.home-body {
+    background-color: #d34d4d; /* Cor de fundo para a página home */
+}
+
+/* Outros estilos podem ser adicionados aqui */
+
+.imagem-produto {
+    width: 150px; /* Largura da imagem */
+    height: 150px; /* Altura da imagem */
+    object-fit: cover; /* Faz com que a imagem preencha o container sem distorcer */
+    border-radius: 40%; /* Aplica borda circular */
+    border: 10px solid #050505; /* Adiciona uma borda ao redor da imagem */
+}
+.imagem-celula {
+    text-align: center; /* Centraliza horizontalmente */
+    vertical-align: middle; /* Centraliza verticalmente */
+    padding: 100px; /* Adiciona um pouco de espaço ao redor da célula */
+}
