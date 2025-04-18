@@ -30,11 +30,12 @@ class SaidaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Adicionar um campo de seleção para os itens da saída
         produtos_disponiveis = Produto.objects.filter(existente=True, quantidade__gt=0)
+        self.produtos_dict = {produto.id: produto for produto in produtos_disponiveis}
+        
         for produto in produtos_disponiveis:
             self.fields[f'produto_{produto.id}'] = forms.IntegerField(
-                label=f'{produto.nome} - Modelo: {produto.modelo} - Codigo: {produto.codigo}',  # Combine nome e modelo
+                label=f'{produto.nome} - Modelo: {produto.modelo} - Codigo: {produto.codigo}',
                 min_value=0,
                 max_value=produto.quantidade,
                 required=False,
@@ -44,25 +45,24 @@ class SaidaForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
 
-        # Salvar a instância principal de saída primeiro, se commit=False
         if not commit:
             instance.save()
 
-        # Salvar os itens de saída
-        for field_name, field_value in self.cleaned_data.items():
-            if field_name.startswith('produto_') and field_value > 0:
+        for field_name, quantidade in self.cleaned_data.items():
+            if field_name.startswith('produto_') and quantidade > 0:
                 produto_id = int(field_name.replace('produto_', ''))
-                produto = Produto.objects.get(pk=produto_id)
-                quantidade = field_value
+                produto = self.produtos_dict.get(produto_id)
 
-                # Criar ou atualizar o item de saída
                 ItemSaida.objects.update_or_create(
                     saida=instance,
                     produto=produto,
                     defaults={'quantidade': quantidade}
                 )
 
-        # Agora salvar a instância principal de saída, se commit=True
+                # Atualiza o estoque
+                produto.quantidade -= quantidade
+                produto.save()
+
         if commit:
             instance.save()
 
@@ -78,6 +78,7 @@ class ItemSaidaForm(forms.ModelForm):
 
 class ProdutoSearchForm(forms.Form):
     #query = forms.CharField(label='Buscar produtos', max_length=100)buscar apenas produtos
+    codigo_barras = forms.CharField(label='Código de Barras', required=False, max_length=100)
     categoria = forms.CharField(label='Categoria', required=False, max_length=100)
     marca = forms.CharField(label='Marca', required=False, max_length=100)
     nome = forms.CharField(label='Nome', required=False, max_length=100)
@@ -86,3 +87,4 @@ class ProdutoSearchForm(forms.Form):
     sku = forms.CharField(label='SKU', required=False, max_length=100)
     preco_min = forms.DecimalField(label='Preço Mínimo', required=False, decimal_places=2, max_digits=10)
     preco_max = forms.DecimalField(label='Preço Máximo', required=False, decimal_places=2, max_digits=10)
+    

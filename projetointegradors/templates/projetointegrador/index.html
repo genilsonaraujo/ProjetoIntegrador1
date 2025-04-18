@@ -1,299 +1,152 @@
-{% extends "projetointegrador/base.html" %} <!--  extensao do arquivo base  -->
+{% extends "projetointegrador/base.html" %}
 {% load django_bootstrap5 %}
 {% load static %}
-{% block content %} 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="=IE=edge">
-    <meta name="viewport" content="width=device-width. initial-scale=1"/>
-    <meta name="description" content="Paloma Comercio"/>
-    <meta name="keywords" content="Gerenciador, produtos, aplicacao web"/>
-    <meta name="author" content="José Genilson"/>
-    <title>Home</title> 
-    <link rel="stylesheet" type="text/css" href="{% static '../static/estilo/estilo.css' %}">
-    <style>
-        body {
-            
-            background-size: cover;
-            background-repeat: no-repeat; /* Evitar repetição da imagem */
-            background-position: center top;
-            background-attachment: fixed; /* Mantém o background fixo enquanto a página é rolada */
-            padding-top: 5px;
-            min-height: 200vh; /* Definindo altura total da página */
-            height: 120vh; 
-            margin-bottom: 150px; /* Espaço para o footer, ajuste conforme necessário */
-         }
 
-        /* Estilos adicionais para a div dos botões */
-        .bottom-buttons {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px; /* Espaçamento interno para os botões */
-            background-color: rgba(255, 255, 255, 0.8); /* Cor de fundo com transparência */
-            margin-top: 150px;
-            
-        }
-        bottom {
-            font-size: 9px; 
-        }
+{% block content %}
+<style>
+    .home-header {
+        background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+        color: white;
+        padding: 70px 20px;
+        text-align: center;
+        border-bottom: 5px solid #ff7e5f;
+    }
 
+    .home-header h2 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
 
-        /* Estilos para o contêiner da imagem */
-        .image-container {
-            display: flex; /* Usando flexbox para centralizar verticalmente */
-            justify-content: center; /* Centralizando horizontalmente */
-            align-items: center; /* Centralizando verticalmente */
-            height: 90vh; /* Definindo altura igual à altura da janela de visualização */
-        
-        }
+    .home-header p {
+        font-size: 1.2rem;
+        max-width: 900px;
+        margin: 0 auto 30px;
+    }
 
-        /* Estilos para a imagem */
-        img {
-            max-width: 100%; /* Garantindo que a imagem não ultrapasse a largura do contêiner */
-            max-height: 100%; /* Garantindo que a imagem não ultrapasse a altura do contêiner */
-            object-fit: contain; /* Mantendo a proporção original da imagem */
-        }
-        /* Estilo para ajustar o tamanho da imagem dentro do botão */
-        .btn-img img {
-            max-width: 30%; /* Define a largura máxima da imagem como 100% do botão */
-            height: auto; /* Permite que a altura da imagem seja ajustada automaticamente para manter a proporção */
-        }
-        
-        .transparent-div {
-            background-color: rgba(255, 255, 255, 0.5); /* Cor de fundo com transparência */
-            padding: 20px;
-            opacity: 0.7; /* Opacidade da div */
-        }
-        .bottom-div {
-            position: fixed;
-            left: 10;
-            bottom: 0;
-            width: 100%;
-            background-color: #f8f9fa;
-            padding: 35px;
-            text-align: center;
-            
-        }
-        .my-div {
-            height: 150px; /* Altura da div */
-            background-color: #b6b8bb; /* Cor de fundo azul */
-            color: #fff; /* Cor do texto branco */
-            display: flex;
-            justify-content: center; /* Alinha horizontalmente */
-            align-items: center; /* Alinha verticalmente */
-        
-              
-        }
-        .header{
-            display: flex;
-            flex-flow:row wrap;
-            height: 600px;
-            background: rgba(33, 41, 83, 0.74);
-            justify-content: center;
+    .home-header .btn-home {
+        background-color: #ff7e5f;
+        color: white;
+        font-weight: 600;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: 0.3s ease;
+    }
+
+    .home-header .btn-home:hover {
+        background-color: #f46060;
+    }
+
+    .home-content {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 50px 20px;
+    }
+
+    .home-content h3 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: #1D3557;
+    }
+
+    .home-content h4 {
+        font-size: 1.3rem;
+        margin-top: 30px;
+        color: #343a40;
+    }
+
+    .home-content p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #444;
+    }
+
+    .servicos {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 25px;
+        justify-content: center;
+        margin-top: 50px;
+    }
+
+    .servico-card {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 30px;
+        width: 300px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(121, 117, 117, 0.05);
+    }
+
+    .servico-card:hover {
+        background-color: #407dd3;
+        color: white;
+        transform: translateY(-5px);
+    }
+
+    .servico-card h4 {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+
+    .servico-card p {
+        font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .servicos {
+            flex-direction: column;
             align-items: center;
         }
-        .headline{
-            margin-left: 10%;
-            flex: 40%;
-            
 
-        }
-        .img-headline{
-            margin-right: 10%;
-            flex: 40%;
-            text-align: center;
-        }
-        .headline h2{
-            font-weight: 900;
-            font-size: 20px;
-            color: rgb(12, 12, 68);
-            padding: 0;
-            margin: 0;
-        }
-        .headline p{
-            color: gray;
-            text-align: left;
-            text-justify: center;
-
-        }
-        .contact-btn{
-            display: inline-block;
-            background: rgb(211, 29, 129);
-            padding: 20px;
-            color: white;
-            text-transform: uppercase;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-        .contact-btn:hover{
-            background: rgb(37, 37, 82);
-        }
-        section{
-        display: inline-block;
-        margin-top:80px;
-        /* border:1px solid black; */
-        margin-left:5%;
-        margin-right:5%;
-        padding:5%;
-        text-align: center;
-    
+        .home-header h2 {
+            font-size: 2.2rem;
         }
 
-        section h2{
-        width:100%;
-        font-size:50px;
-        margin:0;
-        font-family: 'Lobster', cursive;
-        font-weight: bold;
-        color:#180F4A;
+        .servico-card {
+            width: 90%;
         }
+    }
+</style>
 
-        .servicos{
-        display: inline-block;
-        margin-top:5%;
-        }
+<div class="home-header">
+    <h2>Gerenciador de Estoque com ESP32 e Leitor de Código de Barras</h2>
+    <p>Este sistema integra um <strong>ESP32</strong> com um <strong>leitor de código de barras</strong> via comunicação serial e uma aplicação web em <strong>Django</strong>, permitindo o cadastro automático e ágil de produtos ao escanear etiquetas, otimizando o controle de estoque em tempo real.</p>
+    <a href="#sobre" class="btn-home">Explorar Recursos</a>
+</div>
 
-        .card{
-        display: inline-block;
-        width: 30%;
-        padding:20px;
-        margin:1%;
-        border:1px solid #FF2978;
-        border-radius:10px;
-        cursor:pointer;
-        }
+<div class="home-content" id="sobre">
+    <p>O <strong>Gerenciador de Estoque</strong> é uma solução moderna e robusta, desenvolvida especialmente para empresas que desejam automatizar seu controle de mercadorias. Com integração entre hardware e software, é possível agilizar o cadastro de produtos e o monitoramento de estoque com alta precisão.</p>
 
-        .texto-oculto{
-        display: none;
-        }
+    <h4>📡 Integração ESP32 + Django:</h4>
+    <p>Utilizando um ESP32 conectado a um leitor de código de barras, os dados dos produtos são capturados e enviados automaticamente para o sistema Django, eliminando erros manuais e acelerando os processos operacionais.</p>
 
-        .card:hover{
-        background: #FF2978;
-        color:white;
-        padding:40px;
-        }
+    <h4>📦 Controle de Entradas e Saídas:</h4>
+    <p>Visualize e registre movimentações no estoque em tempo real. Gere relatórios precisos com base nos dados coletados automaticamente pelo leitor de códigos.</p>
 
-        .card:hover img{
-        display: none;
-        }
+    <h4>💡 Interface Web Responsiva:</h4>
+    <p>Um painel moderno e intuitivo, acessível de qualquer dispositivo, facilita a gestão, mesmo fora do ambiente físico da empresa.</p>
+</div>
 
-        .card:hover .card-text{
-        display:none;
-        }
-
-        .card:hover .texto-oculto{
-        display:block;
-        }
-
-    
-    </style>
-    
-</head>
-<!--body class="home-body" style="background-color: #031131c2;"> --->
-    <!--<div class="image-container"> --> <!--centraliza-->
-        <!--<img src="{% static '../static/laptop.png' %}" alt="Descrição da imagem" width="600" height="600"> -->
-<body class="home-body">
-    </div> 
-    <div class="image-container"><!--centraliza-->
-       
-    </div> 
-    <div class="container">
-        <!-- Conteúdo da sua página aqui -->
-
-    </div>
-    <header class="header">
-        <div class="headline">
-            <!--<h2 style="letter-spacing: 15px;">Gerenciador Estoque facíl</h2> -->
-            <h2 style="font-size: 60px;">Gerenciador Estoque facíl</h2>
-            <br>
-            <a href="#" class="contact-btn btn-sm btn-primary btn-light d-inline-block" data-bs-toggle="collapse" style="width: 150px; height: 50px;">Sobre Nós</a>
+<section class="home-content">
+    <h3>Serviços Complementares</h3>
+    <div class="servicos">
+        <div class="servico-card">
+            <h4>🔧 Integração com IoT</h4>
+            <p>Desenvolvimento de soluções com microcontroladores para automatizar tarefas do seu negócio.</p>
         </div>
-        <div class="img-headline">
-            <img style="max-width: 80%;" src="{% static '../static/laptop.png' %}">
-
+        <div class="servico-card">
+            <h4>🌐 Desenvolvimento Web</h4>
+            <p>Aplicações modernas, escaláveis e integradas ao seu ambiente de trabalho com foco em eficiência.</p>
         </div>
-    </header>
-    <div class="container">
-        <P><p></p>O "Gerenciador de Estoque Fácil" é uma aplicação web desenvolvida utilizando o framework Django, projetada para simplificar e otimizar o controle de estoque de produtos em diversos tipos de negócios e organizações. Esta aplicação oferece uma interface intuitiva e funcionalidades robustas para acompanhar o inventário, registrar entradas e saídas de produtos, além de fornecer insights valiosos para a gestão eficiente de estoques.</P>
-        <h3 style="font-size:30px;">Principais Recursos:</h3>
-            <h4 style="font-size:20px;">Controle de Estoque Centralizado:</h4>
-            <p>O Gerenciador de Estoque Fácil permite que os usuários registrem todos os produtos disponíveis em um único local centralizado. Cada item pode ser categorizado, com informações detalhadas como nome, descrição, quantidade atual, preço unitário, fornecedor e outras características relevantes.</p>
-            <h4 style="font-size:20px;">Registro de Entradas e Saídas:</h4>
-            <p>Os usuários podem facilmente registrar entradas de novos produtos no estoque, indicando a quantidade recebida, data de entrada e outros detalhes pertinentes. Da mesma forma, as saídas de produtos também podem ser registradas, informando a quantidade retirada, destino e motivo da retirada.</P>
+        <div class="servico-card">
+            <h4>📈 Consultoria em TI</h4>
+            <p>Transformamos seu processo operacional com tecnologia personalizada e acessível.</p>
+        </div>
     </div>
-    <div class="container">
-        <h3>Integrantes do Projeto</h3>
-        <br>
-        <ol><li>Alexander da Silva RA2205385</li>
-            <li>Diego Santos da Ressurreição RA2203424</li>
-            <li>Gabriel Macedo Silva RA2202412</li>
-            <li>José Genilson Araújo de Souza RA2207172</li>
-            <li>Luciano Junior Lima de Oliveira RA2221111</li>
-            <li>Luciano Miguel de Oliveira RA2109986</li>
-            <li>Marcela Barros Lima RA2210061</li>
-        </ol>
-        <hr>
-    </div>
-    <section>
-        <h3>O que podemos fazer pelo seu negócio?</h3>
-        <div class="servicos">
-            <div class="card">
-                <img src="{% static '../static/pc.png' %}">
-                <div class="card-text">
-                    <h3>Desenvolvimento de Sites</h3>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae nobis totam omnis veritatis
-                        sit
-                        distinctio doloremque quia officiis, asperiores, consectetur dolorem magnam doloribus eos odio
-                        quibusdam? Excepturi corrupti labore necessitatibus?</p>
-                </div>
-                <div class="texto-oculto">
-                    <h3>Outro conteúdo qualquer</h3>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae nobis totam omnis veritatis
-                        sit
-                        distinctio doloremque quia officiis, asperiores, consectetur dolorem magnam doloribus eos odio
-                        quibusdam? Excepturi corrupti labore necessitatibus?</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="{% static '../static/smartphone.png' %}">
-                <div class="card-text">
-                    <h3>Desenvolvimento de Apps</h3>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae nobis totam omnis veritatis
-                        sit
-                        distinctio doloremque quia officiis, asperiores, consectetur dolorem magnam doloribus eos odio
-                        quibusdam? Excepturi corrupti labore necessitatibus?</p>
-                </div>
-                <div class="texto-oculto">
-                    <h3>Outro conteúdo qualquer</h3>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae nobis totam omnis veritatis
-                        sit
-                        distinctio doloremque quia officiis, asperiores, consectetur dolorem magnam doloribus eos odio
-                        quibusdam? Excepturi corrupti labore necessitatibus?</p>
-                </div>
-            </div>
-                <div class="card">
-                    <img src="{% static '../static/marketing.png' %}">
-                    <div class="card-text">
-                        <h3>Gerenciamento  Digital pra Você</h3>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae nobis totam omnis veritatis
-                        sit
-                        distinctio doloremque quia officiis, asperiores, consectetur dolorem magnam doloribus eos odio
-                        quibusdam? Excepturi corrupti labore necessitatibus?</p>
-                    </div>
-                    <div class="texto-oculto">
-                        <h3>Outro conteúdo qualquer</h3>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae nobis totam omnis veritatis
-                        sit
-                        distinctio doloremque quia officiis, asperiores, consectetur dolorem magnam doloribus eos odio
-                        quibusdam? Excepturi corrupti labore necessitatibus?</p>
-                    </div>
-                </div>
-            </div>
-    </section>
-</body>
-</html>
-{% endblock content %}
+</section>
+{% endblock %}
+

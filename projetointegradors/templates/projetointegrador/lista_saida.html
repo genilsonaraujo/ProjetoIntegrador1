@@ -1,57 +1,172 @@
 {% extends 'projetointegrador/base.html' %}
 
 {% block content %}
-<body>
-    <style>
-        /* Remove margem e preenchimento em torno do título */
-        h4 {
-            margin: 0; /* Remove todas as margens */
-            padding: 0; /* Remove todo o preenchimento */
-            margin-bottom: 0; /* Define a margem inferior como zero */
+<style>
+    /* Estilo geral da página */
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f4f4f9;
+    }
+
+    h4 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #1D3557;
+    }
+
+    .table-responsive {
+        margin-top: 20px;
+        padding: 10px;
+    }
+
+    /* Estilizando a tabela */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+        background-color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .table th, .table td {
+        padding: 12px 15px;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    .table th {
+        background-color: #2A9D8F;
+        color: white;
+        font-size: 1rem;
+    }
+
+    .table td {
+        font-size: 0.95rem;
+        color: #495057;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    .btn-action {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+        border-radius: 4px;
+        text-decoration: none;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .add-button {
+        margin-top: 20px;
+        display: inline-block;
+        background-color: #28a745;
+        color: white;
+        padding: 10px 15px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .add-button:hover {
+        background-color: #218838;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .table th, .table td {
+            padding: 8px 10px;
         }
-    </style>
-    <h4 style="margin-left: 20px">Lista de Saídas</h4>
-    <div class="table-responsive">
-        {% if saidas %}
-            <table class="table table-bordered table-nover m-3 md-2 mt-0">
-                <thead class="table-dark">
+
+        h4 {
+            font-size: 1.5rem;
+        }
+
+        .add-button {
+            width: 100%;
+            margin-top: 10px;
+        }
+    }
+</style>
+
+<h4>Lista de Saídas</h4>
+
+<div class="table-responsive">
+    {% if saidas %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Observação</th>
+                    <th>Data de Registro</th>
+                    <th>Itens da Saída</th>
+                    <th>Quantidade</th>
+                    <th>Preço Total</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for saida in saidas %}
                     <tr>
-                        <th>ID</th>
-                        <th>Observação</th>
-                        <th>Data de Registro</th>
-                        <th>Itens da Saída</th>
-                        <th></th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for saida in saidas %}
-                        <tr>
-                            <td class="bg-light">{{ saida.pk }}</td>
-                            <td class="bg-light">{{ saida.observacao }}</td>
-                            <td class="bg-light">{{ saida.data_saida|date:"d/m/Y H:i:s" }}</td>
-                            <td class="bg-light">
-                                <ul class="list-group">
-                                    {% for item in saida.itens.all %}
-                                        <li class="list-group-item">{{ item.produto.nome }} - Quantidade: {{ item.quantidade }} - Preço Unitário: R$ {{ item.produto.preco }} - Preço Total: R$ {{ item.preco_total }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <td class="bg-light">{{ saida.preco_total }}</td> <!-- Mostra o preço total da saída -->
-                            <td>
-                                <!-- Link para remover a saída -->
-                                <a href="{% url 'remover_saida' saida.pk %}" class="btn btn-danger btn-sm">Remover</a>
-                            </td>
-                        </tr>
+                        <td>{{ saida.pk }}</td>
+                    <td>{{ saida.observacao }}</td>
+                    <td>{{ saida.data_saida|date:"d/m/Y H:i:s" }}</td>
+                    <td>
+                        <!-- Melhorando o alinhamento e apresentação dos itens -->
+                        <div class="itens-saida">
+                            {% for item in saida.itens.all %}
+                                <div class="item">
+                                    <strong>{{ item.produto.nome }}</strong><br>
+                                    Quantidade: {{ item.quantidade }}<br>
+                                    Preço Total: R$ {{ item.preco_total }}
+                                </div>
+                                <hr>
+                            {% endfor %}
+                        </div>
+                    </td>
+                    {% for item in saida.itens.all %}
+                    <td>Quantidade: {{ item.quantidade }}</td>
+                    </td>
+                    <td><strong>R$ {{ item.preco_total }}</strong></td>
                     {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-            <p>Nenhuma saída registrada.</p>
-        {% endif %}
-        <div>
-            <a href="{% url 'registrar_saida' %}" class="btn btn-success btn-sm m-5 mt-0" style="width: 120px; height: 50px;">Registrar Nova Saída</a>
-        </div>
-    </body>
+                        <td>
+                            <a href="{% url 'remover_saida' saida.pk %}" class="btn-action btn-danger">Remover</a>
+                            <a href="{% url 'detalhes_saida' pk=saida.pk %}" class="btn-action btn-primary">Detalhes</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhuma saída registrada.</p>
+    {% endif %}
+</div>
+
+<a href="{% url 'registrar_saida' %}" class="add-button">Registrar Nova Saída</a>
+
 {% endblock content %}
+

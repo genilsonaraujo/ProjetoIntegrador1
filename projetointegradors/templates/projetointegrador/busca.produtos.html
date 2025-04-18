@@ -1,23 +1,121 @@
 {% extends 'projetointegrador/base.html' %}
-{% block content %}   
-    <h2>Lista de Produtos</h2>
 
-    <form method="get">
-        {{ form.as_p }}
-        <button type="submit">Buscar</button>
-    </form>
+{% block content %}
+<style>
+    body {
+        background-color: #f5f7fa;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
+    h2 {
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: #1D3557;
+        margin-bottom: 30px;
+    }
+
+    form {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+
+    form button {
+        background-color: #F4A261;
+        color: white;
+        padding: 12px 20px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    form button:hover {
+        background-color: #E76F51;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .produto-item {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .produto-item a {
+        text-decoration: none;
+        background-color: #2A9D8F;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: background-color 0.3s;
+    }
+
+    .produto-item a:hover {
+        background-color: #1A6B62;
+    }
+
+    .produto-info {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .produto-info span {
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        form {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+
+<h2>Buscar Produtos</h2>
+
+<form method="get" class="search-form">
+    {{ form.as_p }}
+    <button type="submit">Buscar</button>
+</form>
+
+{% if produtos %}
     <ul>
         {% for produto in produtos %}
-            <li>{{ produto.nome }} - {{ produto.categoria }} - {{ produto.marca }} - {{ produto.modelo }} - {{ produto.codigo }} - {{ produto.sku }} - {{ produto.preco }}- {{ produto.quantidade }}</li>
-            <a href="{% url 'editar_produto' produto.id %}">Editar Produto</a>
-            
-        {% empty %}
-        
-            <li>Nenhum produto encontrado.</li>
+            <li class="produto-item">
+                <div class="produto-info">
+                    <p><span>Codigo de Barra:</span> {{ produto.codigo_barras }}</p>
+                    <p><span>Nome:</span> {{ produto.nome }}</p>
+                    <p><span>Categoria:</span> {{ produto.categoria }}</p>
+                    <p><span>Marca:</span> {{ produto.marca }}</p>
+                    <p><span>Modelo:</span> {{ produto.modelo }}</p>
+                    <p><span>Código:</span> {{ produto.codigo }}</p>
+                    <p><span>SKU:</span> {{ produto.sku }}</p>
+                    <p><span>Preço:</span> R$ {{ produto.preco }}</p>
+                    <p><span>Quantidade:</span> {{ produto.quantidade }}</p>
+                </div>
+                <a href="{% url 'editar_produto' produto.id %}">Editar Produto</a>
+            </li>
         {% endfor %}
     </ul>
+{% else %}
+    <p>Nenhum produto encontrado.</p>
+{% endif %}
+{% endblock %}
 
-    
-{% endblock content %}
 

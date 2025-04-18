@@ -2,88 +2,108 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="=IE=edge">
-        <meta name="viewport" content="width=device-width. initial-scale=1"/>
-        <meta name="description" content="Paloma Comercio"/>
-        <meta name="keywords" content="Gerenciador, produtos, aplicacao web"/>
-        <meta name="author" content="José Genilson"/>
-        <title>Gerenciador de Estoque</title>
-        {% bootstrap_css %}
-        {% bootstrap_javascript %}
-        <link rel="stylesheet" type="text/css" href="{% static '../static/estilo.css' %}"> 
-    </head>
-    
-    <body class="cor-de-fundo" >
-        <nav class="navbar" style="background-color: #031131c2;" navbar-static-top>
-            <div class="container-fluid">
-                <div class="navebar-header"> 
-                    <button class="navbar-toggler" 
-                            type="button" 
-                            data-bs-toggle="collapse" 
-                            data-bs-target="#navbar" 
-                            aria-controls="navbarNavDropdown" 
-                            aria-expanded="false" 
-                            aria-label="Toggle navigation">
-                            <img src="{% static '../static/estoque.png' %}" height='40px'>
-                        <span></span>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Paloma Comércio" />
+    <meta name="keywords" content="Gerenciador, Estoque, Aplicação Web" />
+    <meta name="author" content="José Genilson" />
+    <title>Gerenciador de Estoque</title>
 
-                    </button>
-                        <p class="nav-item"><a class="navbar-brand" href="{% url 'index' %}"></a></p>
-                </div>
-                <div id="navbar" class="collapse navbar-collapse show">
-                    <ul class="navbar-nav">
-                        <li><a class="dropdown-item color-text" href="{% url 'home' %}">Home</a></li>
-                        <li><a class="dropdown-item color-text" href="{% url 'topics' %}">Fornecedores</a></li>
-                        <li><a class="dropdown-item color-text" href="{% url 'new_topic' %}">Novos Fornecedores</a></li>
-                        <li><a class="dropdown-item color-text" href="{% url 'lista_produtos' %}">Lista de Produtos</a></li>
-                        <li><a class="dropdown-item color-text" href="{% url 'busca_produtos' %}">Buscar produto</a></li>
-                        <li><a class="dropdown-item color-text" href="{% url 'cria_produto' %}">Adicionar Produtos</a></li>
-                        <li><a class="dropdown-item color-text" href="{% url 'lista_saida' %}">Lista de Saída</a></li>
-                        
-                    </ul>
-            
-                    <ul class="navbar-nav mx-auto">
-                    
-                        {% if user.is_authenticated %}
-                        <ul class="navbar-nav text-end">
-                           <div><li><a class="ml-auto"> Olá, {{ user.username }}</a></li></div>
-                            <div><img src="{% static '../static/login.png' %}"class="rounded float-end"height='50px'></div>
-                        </ul>
-                        <ul class="navbar-nav text-end">
-                                <div>
-                                <li class="nav-item"><a class="nav-link ml-auto me-3" href="{% url 'logout' %}">Sair</a></li><!--o logout nao é uma pagina e sim um caminho -->
-                                </div>
-                            {% else %}
-                        </ul>
-                            <ul class="navbar-nav">
-                                <div>
-                                <li class="nav-item ms-auto">
-                                    <a class="nav-link" href="{% url 'login' %}">Entrar</a>
-                                </li>
-                                </div>
-                            </ul>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>      
-        
-        <footer class="footer fixed-bottom mt-auto py-1 bg-light" >
-            <div class="container d-flex align-items-center">
-                <span class="text-center mx-auto" class="text-dark">
-                   <p>Gerenciador Estoque Fácil © Copyright 2024</p>
-                </span>
-            </div>
-        </footer>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-XeVhLwDk7pN8yIcP4tvFq3/t9b7XnOB9tmeCfXv1H6t/v4XU9eG1T1RSKMEIrFfN" crossorigin="anonymous"></script>
-    </body>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'estilo.css' %}" />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .navbar-brand {
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .nav-link {
+        font-weight: 500;
+        transition: color 0.2s ease;
+      }
+
+      .nav-link:hover {
+        color: #ffffff;
+        background-color: #0d6efd;
+        border-radius: 4px;
+      }
+
+      footer {
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+
+  <body class="bg-light d-flex flex-column min-vh-100">
+    <!-- Navbar empresarial -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'index' %}">
+          App
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+          aria-controls="navbarContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'topics' %}">Fornecedores</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'new_topic' %}">Novo Fornecedor</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'lista_produtos' %}">Lista de Produtos</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'busca_produtos' %}">Buscar Produto</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'cria_produto' %}">Adicionar Novo Produto</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'lista_saida' %}">Lista de Saídas</a></li>
+          </ul>
+
+          <ul class="navbar-nav ms-auto">
+            {% if user.is_authenticated %}
+              <li class="nav-item d-flex align-items-center me-2">
+                <span class="text-white">Olá, {{ user.username }}</span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Sair</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Entrar</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Conteúdo dinâmico -->
+    <main class="container py-4 flex-grow-1">
+      {% block content %}
+      {% endblock content %}
+    </main>
+
+    <!-- Rodapé moderno -->
+    <footer class="bg-dark text-light text-center py-3 mt-auto shadow-lg">
+      <div class="container">
+        <span>© 2024 Gerenciador Estoque Fácil - Todos os direitos reservados</span>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  </body>
 </html>
-  
- <!-- TODO O CONTEÚDO DE UM TEMPLATE DEVE SER EXIBIDO DENTRO DESSE BLOCK CONTEÚDO E O FINAL DELE. -->
- {% block content %}
-   
- {% endblock content %}     
- <!-- FINAL DO TEMPLATE, É AQUI QUE FINALIZA A PARTE DO TEMPLATE QUE CRIEI, COLOCANDO ENTRE ELES O CÓDIGO DESCRITO  -->
+
 

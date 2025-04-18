@@ -1,24 +1,41 @@
-{% extends "projetointegrador/base.html" %} <!--  extensao do arquivo base  -->
+{% extends "projetointegrador/base.html" %}
 
-
-{% block content %} 
+{% block content %}
 <style>
-    /* Estiliza o formulário para remover margem entre os parágrafos */
-    form {
-        margin-left: 20px; /* Margem à esquerda para o formulário */
+    .form-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 30px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
     }
 
-    /* Remove a margem inferior dos parágrafos dentro do formulário */
-    form p {
-        margin-bottom: 5px; /* Ajuste o valor conforme necessário */
+    .form-container h3 {
+        color: #1D3557;
+        font-weight: bold;
+        margin-bottom: 25px;
+    }
+
+    .form-container form p {
+        margin-bottom: 15px;
+    }
+
+    .form-container button {
+        width: 100%;
+        padding: 10px;
+        font-weight: bold;
+        border-radius: 8px;
     }
 </style>
-    <h3 style="margin-left: 20px">Adicione um Novo Fornecedor</h3>
-    <div class="mb-3">
-        <form action="{% url 'new_topic' %}" method='post'> <!--invia para mesma pagina que esta-->
-            {% csrf_token %}<!--tag de segurança-->
-            {{ form.as_p }}
-        <button name="submit" class="btn btn-primary">Adicionar</button>
-        </form>
-        </div>
+
+<div class="form-container">
+    <h3>📦 Adicione um Novo Fornecedor</h3>
+    <form action="{% url 'new_topic' %}" method="post">
+        <h4>Razão Social:</h4>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="submit" class="btn btn-primary">Adicionar Fornecedor</button>
+    </form>
+</div>
 {% endblock content %}

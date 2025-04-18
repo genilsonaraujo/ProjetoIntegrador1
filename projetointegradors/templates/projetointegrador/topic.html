@@ -1,40 +1,36 @@
 {% extends "projetointegrador/base.html" %}
 
-{% block content %} 
-    
- 
-<div class="container"><h3>Fornecedor {{ topic }}</h3>
-    <p>Anotações</p>
-    
-    
-    <p><a href="{% url 'new_entry' topic.id %}">Adicionar uma nova Informação</a></p>
-    
-    <ul>
-        {% for entry in entries %}
-        
+{% block content %}
+<div class="container my-5">
+    <h3 class="text-primary mb-4">Fornecedor: <strong>{{ topic }}</strong></h3>
 
-        
-    <li>
-            <p>{{ entry.date_added | date:'M d, Y H:i' }}</p>
-            <p>{{ entry.text | linebreaks }}</p>
-            
-            
-    <!-- Exibição dos novos campos -->
-    <p><strong>Endereço:</strong> {{ entry.address }}</p>
-            
-            
-    <p><strong>CNPJ:</strong> {{ entry.cnpj }}</p>
-    <p><strong>Telefone:</strong> {{ entry.phone }}</p>
-            
-            
-     
-    <p><a href="{% url 'edit_entry' entry.id %}">Editar Anotações</a></p>
-    </li>
-        {% empty %}
-        
-        
-    <li>Não há Registro</li>
-        {% endfor %}
-    </ul>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">📋 Anotações</h5>
+        <a href="{% url 'new_entry' topic.id %}" class="btn btn-success btn-sm">➕ Nova Informação</a>
+    </div>
+
+    {% if entries %}
+        <div class="row">
+            {% for entry in entries %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">{{ entry.date_added|date:"d M Y - H:i" }}</h6>
+                        <p class="card-text">{{ entry.text|linebreaks }}</p>
+
+                        <hr>
+                        <p><strong>🏠 Endereço:</strong> {{ entry.address }}</p>
+                        <p><strong>🧾 CNPJ:</strong> {{ entry.cnpj }}</p>
+                        <p><strong>📞 Telefone:</strong> {{ entry.phone }}</p>
+
+                        <a href="{% url 'edit_entry' entry.id %}" class="btn btn-outline-primary btn-sm mt-2">✏️ Editar</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">Não há registro de anotações para este fornecedor ainda.</div>
+    {% endif %}
 </div>
 {% endblock content %}

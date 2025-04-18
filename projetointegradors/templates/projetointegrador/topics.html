@@ -1,32 +1,35 @@
-
-
-
-
-
-{% extends "projetointegrador/base.html" %} <!--  extensao do arquivo base  -->
-<style>
-    /* Estiliza o formulário para remover margem entre os parágrafos */
-    form {
-        margin-left: 20px; /* Margem à esquerda para o formulário */
-    }
-
-    /* Remove a margem inferior dos parágrafos dentro do formulário */
-    form {
-        margin-bottom: 5px; /* Ajuste o valor conforme necessário */
-    }
-</style>
+{% extends "projetointegrador/base.html" %}
 
 {% block content %}
-    <br/>
-    <br/>
-    <h3 style="margin-left: 20px">Fornecedores:</h3>
-    <ul>
-        {% for topic in topics %} <!--topic variavel -->
-            <li><!--com o link a baixo a pagina vai direto pata o link do id de topico, do ex. parafuso-->
-                <a href="{% url 'topic' topic.id %}">{{ topic }}</a</li> <!--nao vai ler a variavel mas sim o conteudo dentro-->
-        {% empty %}<!--se estiver vazio-->
-            <li>Não há Novos fornecedores</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'new_topic' %}"class="btn btn-success btn-sm float-right" style="width: 150px; height: 50px;">Adicionar novos Fornecedores</a>
-{% endblock content %}  
+<div class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-primary">📦 Fornecedores</h3>
+        <a href="{% url 'new_topic' %}" class="btn btn-success">
+            ➕ Adicionar Fornecedor
+        </a>
+    </div>
+
+    {% if topics %}
+        <div class="row">
+            {% for topic in topics %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'topic' topic.id %}" class="text-decoration-none text-dark">
+                                {{ topic }}
+                            </a>
+                        </h5>
+                        <p class="card-text text-muted">Clique para ver os detalhes do fornecedor.</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">Nenhum fornecedor cadastrado até o momento.</div>
+    {% endif %}
+
+</div>
+{% endblock content %}

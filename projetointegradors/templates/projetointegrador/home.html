@@ -1,243 +1,110 @@
-{% extends "projetointegrador/base.html" %} <!--  extensao do arquivo base  -->
+{% extends "projetointegrador/base.html" %}
 {% load django_bootstrap5 %}
 {% load static %}
-{% block content %} 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="=IE=edge">
-    <meta name="viewport" content="width=device-width. initial-scale=1"/>
-    <meta name="description" content="Paloma Comercio"/>
-    <meta name="keywords" content="Gerenciador, produtos, aplicacao web"/>
-    <meta name="author" content="José Genilson"/>
-    <title>Home</title> 
-    <link rel="stylesheet" type="text/css" href="{% static '../static/estilo/estilo.css' %}">
-    <style>
-        body {
-            background-color: #b6b8bb;
-            background-size: cover;
-            background-repeat: no-repeat; /* Evitar repetição da imagem */
-            background-position: center top;
-            background-attachment: fixed; /* Mantém o background fixo enquanto a página é rolada */
-            padding-top: 5px;
-            min-height: 300vh; /* Definindo altura total da página */
-            height: 120vh; 
-            margin-bottom: 150px; /* Espaço para o footer, ajuste conforme necessário */
-         }
 
-        /* Estilos adicionais para a div dos botões */
-        .bottom-buttons {
-            position: absolute;
-            bottom: 0;
+{% block content %}
+<style>
+    .hero-section {
+        background: linear-gradient(to right, #1D3557, #457B9D);
+        color: white;
+        padding: 60px 20px;
+        text-align: center;
+    }
+
+    .hero-section h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .hero-buttons .btn {
+        margin: 10px;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        border-radius: 8px;
+    }
+
+    .about-section {
+        background-color: #f8f9fa;
+        padding: 60px 20px;
+    }
+
+    .about-section h2 {
+        color: #1D3557;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .contact-section {
+        padding: 40px 20px;
+        background-color: #fff;
+        border-top: 2px solid #ccc;
+    }
+
+    footer {
+        background-color: #1D3557;
+        color: white;
+    }
+
+    footer a.btn {
+        border-radius: 30px;
+    }
+
+    @media (max-width: 768px) {
+        .hero-section h1 {
+            font-size: 2rem;
+        }
+
+        .hero-buttons .btn {
             width: 100%;
-            text-align: center;
-            padding: 10px; /* Espaçamento interno para os botões */
-            background-color: rgba(255, 255, 255, 0.8); /* Cor de fundo com transparência */
-            margin-top: 150px;
-            
+            margin: 5px 0;
         }
-        bottom {
-            font-size: 9px; 
-        }
+    }
+</style>
 
-
-        /* Estilos para o contêiner da imagem */
-        .image-container {
-            display: flex; /* Usando flexbox para centralizar verticalmente */
-            justify-content: center; /* Centralizando horizontalmente */
-            align-items: center; /* Centralizando verticalmente */
-            height: 20vh; /* Definindo altura igual à altura da janela de visualização */
-        
-        }
-
-        /* Estilos para a imagem */
-        img {
-            max-width: 100%; /* Garantindo que a imagem não ultrapasse a largura do contêiner */
-            max-height: 100%; /* Garantindo que a imagem não ultrapasse a altura do contêiner */
-            object-fit: contain; /* Mantendo a proporção original da imagem */
-        }
-        /* Estilo para ajustar o tamanho da imagem dentro do botão */
-        .btn-img img {
-            max-width: 30%; /* Define a largura máxima da imagem como 100% do botão */
-            height: auto; /* Permite que a altura da imagem seja ajustada automaticamente para manter a proporção */
-        }
-        
-        .transparent-div {
-            background-color: rgba(255, 255, 255, 0.5); /* Cor de fundo com transparência */
-            padding: 20px;
-            opacity: 0.7; /* Opacidade da div */
-        }
-        .bottom-div {
-            position: fixed;
-            left: 10;
-            bottom: 0;
-            width: 100%;
-            background-color: #f8f9fa;
-            padding: 35px;
-            text-align: center;
-            
-        }
-        .my-div {
-            height: 150px; /* Altura da div */
-            background-color: #b6b8bb; /* Cor de fundo azul */
-            color: #fff; /* Cor do texto branco */
-            display: flex;
-            justify-content: center; /* Alinha horizontalmente */
-            align-items: center; /* Alinha verticalmente */
-        
-              
-        }
-        .header{
-            display: flex;
-            flex-flow:row wrap;
-            height: 920px; /* tamanho fundo do background texto*/
-            background: rgba(33, 41, 83, 0.74);
-            justify-content: center;
-            align-items: center;
-        }
-        .headline{
-            margin-left: 10%;
-            flex: 40%;
-            
-
-        }
-        .img-headline{
-            margin-right: 10%;
-            flex: 40%;
-            text-align: center;
-            background-position: 10%;
-            
-        }
-        .headline h2{
-            font-weight: 900;
-            font-size: 20px;
-            color: rgb(2, 2, 27);
-            padding: 0;
-            margin: 0;
-        }
-        .headline p{
-            color: white;
-            text-align: left;
-            font-size: 15px;
-            line-height: 1.6;
-            text-align: justify;
-
-        }
-        /*p:first-letter {
-            font-size: 1.5em; /* Tamanho da primeira letra */
-            /*float: left;  Para fazer com que a primeira letra flutue para a esquerda */
-            /*margin-right: 3px; /* Margem à direita da primeira letra para separá-la do texto */
-            /*font-weight: bold; /* Estilo da primeira letra (negrito, neste caso) */
-        /*}*/
-        .contact-btn{
-            display: inline-block;
-            background: rgb(211, 29, 129);
-            padding: 20px;
-            color: white;
-            text-transform: uppercase;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-        .contact-btn:hover{
-            background: rgb(37, 37, 82);
-        }
-    
-    </style>
-    
-</head>
-<!--body class="home-body" style="background-color: #031131c2;"> --->
-    <!--<div class="image-container"> --> <!--centraliza-->
-        <!--<img src="{% static '../static/laptop.png' %}" alt="Descrição da imagem" width="600" height="600"> -->
-<body class="home-body">
-    </div> 
-    <div class="image-container"><!--centraliza-->
-       
-    </div> 
-    <div class="container">
-        <!-- Conteúdo da sua página aqui -->
-
+<!-- Hero Section -->
+<div class="hero-section">
+    <h1>Paloma Comércio de Parafusos</h1>
+    <p class="lead">Soluções em ferramentas e fixadores para sua empresa e dia a dia</p>
+    <div class="hero-buttons">
+        <a href="#" class="btn btn-warning fw-bold">Sobre</a>
+        <a href="#" class="btn btn-light fw-bold">Solicitar Orçamento</a>
+        <a href="#" class="btn btn-outline-light">Contato</a>
     </div>
-    <h2 style="font-size: 40px;margin-left: 130px;">Paloma Comércio de Parafusos</h2>
-    <header class="header">
-        <div class="headline">
-            <!--<h2 style="letter-spacing: 15px;">Gerenciador Estoque facíl</h2>-->
-            <h2 style="font-size: 25px;">Sobre Nós</h2>
-            <br>
-            <P>    A Empresa Paloma Comércio está localizada em Piedade-SP, ela se destaca como uma referência na região quando se trata de ferramentas, parafusos e materiais em geral. Com um compromisso sólido com a qualidade e o atendimento ao cliente, a loja oferece uma ampla variedade de produtos e conta com uma equipe experiente.
-                Ao entrar na Paloma Comércio, você é recebido por um ambiente acolhedor, repleto de corredores e prateleiras abastecidos com ferramentas e materiais essenciais para construção, manutenção e reparos. Desde parafusos de diferentes tamanhos e materiais até ferramentas elétricas de última geração, a loja disponibiliza opções para atender tanto aos profissionais mais exigentes quanto aos consumidores domésticos.
-                O sucesso da loja não se resume apenas à diversidade do catálogo, mas também ao compromisso de proporcionar uma experiência de compra excepcional.</P> 
-            <p>Os funcionários estão sempre prontos para auxiliar os clientes, oferecendo conhecimento técnico e orientação sobre os produtos mais adequados às necessidades específicas de cada projeto.
-                Além disso, a Paloma Comércio valoriza a relação de confiança com seus clientes, garantindo produtos de marcas reconhecidas por sua qualidade e durabilidade. Essa abordagem cuidadosa resulta em clientes satisfeitos que retornam à loja sempre que precisam de suprimentos para seus empreendimentos.
-                Como parte integrante da comunidade de Piedade-SP, a loja também participa ativamente de eventos locais e apoia iniciativas que promovem o desenvolvimento da região. Sua presença vai além de ser apenas um estabelecimento comercial; é um ponto de referência para os profissionais da área e para todos aqueles que valorizam ferramentas confiáveis e materiais de qualidade.</p>
-            <p>Em resumo, a Paloma Comércio é um parceiro confiável para aqueles que buscam excelência em suprimentos para construção, manutenção e reparos. Seja para um projeto simples em casa ou para empreendimentos mais complexos, a loja está pronta para oferecer soluções e produtos que fazem a diferença.</P>
-            <a href="#" class="contact-btn btn-sm btn-primary btn-light d-inline-block" data-bs-toggle="collapse" style="width: 150px; height: 50px;">SAIBA MAIS</a>
-        </div>
-        <div class="img-headline">
-            <div class="container">
-                <img style="max-width: 40%;" src="{% static '../static/parafuso2.png' %}">
-            </div>
-            <div>
-                <img style="max-width: 20%;" src="{% static '../static/parafuso1.png' %}">
-            </div>
+</div>
 
-        </div>
-    </header>
-    <br>
-    <br>
-    <div class="container"> 
-        <h3>Paloma Comércio de Parafusos</h3>
-        <h3> e Ferramentas em Geral</h3></div>
-        <hr>
-        <P style="margin-left: 110px;"> Contato: (11) 94798 - 1038</P>
-        <p style="margin-left: 110px;"> Endereço: Rua Capitão Moraes nº 920-B Bairro: cotianos- Piedade-SP</p>
-    </div>
-    <div><p style="margin-left: 110px; font-size: 12px;">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae nobis totam omnis veritatis
-        sit
-        distinctio doloremque quia officiis, asperiores, consectetur dolorem magnam doloribus eos odio
-        quibusdam? Excepturi corrupti labore necessitatibus?</p></div>
-    
+<!-- Sobre Nós -->
+<div class="about-section container">
+    <h2 class="text-center">Sobre a Empresa</h2>
+    <p class="text-muted">
+        Localizada em Piedade-SP, a Paloma Comércio é referência na região em ferramentas, parafusos e materiais em geral.
+        Nosso compromisso é com a qualidade, variedade e um atendimento próximo ao cliente.
+    </p>
+    <p class="text-muted">
+        Desde parafusos até ferramentas elétricas, atendemos tanto profissionais quanto consumidores finais, sempre com suporte técnico e confiança.
+    </p>
+    <p class="text-muted">
+        Participamos da comunidade local com responsabilidade e oferecemos soluções completas para sua necessidade, com agilidade e precisão.
+    </p>
+</div>
 
-    <!-- Div para os botões -->
-    <div class="bottom-buttons  bottom-div my-div">
-        <div class="container">
-        <div class="d-flex" class="image-container "><!--centraliza-->
-            <a href="{% url 'home' %}">   
-                <button type="button" class="btn btn-img btn-sm btn-light d-inline-block" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="width: 120px; height: 50px;" >
-                    Home
-                </button>
-            </a>
-            <a href="{% url 'topics' %}">
-                <button type="button" class="btn btn-img btn-sm btn-primary" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="width: 150px; height: 50px;" >
-                    <img src="{% static '../static/fornecedor.png' %}" alt="Imagem 1" style="width: 20px; height: 20px;">
-                    Fornecedor
-                </button>
-            </a>
-            <a href="{% url 'lista_produtos' %}">  
-                <button type="button" class="btn btn-img btn-sm btn-primary" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="width: 150px; height: 50px;">
-                    <img src="{% static '../static/produto.png' %}" alt="Imagem 1" style="width: 20px; height: 20px;">
-                    Produtos
-                </button>
-            </a>
-            <a href="{% url 'lista_saida' %}">
-                <button type="button" class="btn btn-img btn-sm btn-primary" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="width: 150px; height: 50px;">
-                    <img src="{% static '../static/venda.png' %}" alt="Imagem 1" style="width: 20px; height: 20px;">
-                Saída
-                </button>
-            </a>
-            <button type="button" class="btn btn-img btn-sm btn-primary" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="width: 150px; height: 50px;">
-                <img src="{% static '../static/painel.png' %}" alt="Imagem 1" style="width: 20px; height: 20px;">
-                Painel Geral
-            </button>
-            <button type="button" class="btn btn-img btn-sm btn-primary" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="width: 120px; height: 50px;">
-                Empresa
-            </button>
-            <button type="button" class="btn btn-img btn-sm btn-light" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="width: 120px; height: 50px;">
-                Sobre Nós
-            </button>
-        </div>
-        </div>
+<!-- Contato -->
+<div class="contact-section container text-center">
+    <h4 class="fw-semibold">Entre em Contato</h4>
+    <p><strong>📞 Telefone:</strong> (11) 94798-1038</p>
+    <p><strong>📍 Endereço:</strong> Rua Capitão Moraes nº 920-B, Cotianos - Piedade, SP</p>
+    <a href="#" class="btn btn-outline-primary mt-3">Enviar Mensagem</a>
+</div>
+
+<!-- Rodapé -->
+<footer class="text-center py-4">
+    <div class="container d-flex flex-wrap justify-content-center gap-3">
+        <a href="{% url 'home' %}" class="btn btn-light">Início</a>
+        <a href="#" class="btn btn-outline-light">Produtos</a>
+        <a href="#" class="btn btn-outline-light">Sobre Nós</a>
+        <a href="#" class="btn btn-outline-light">Contato</a>
     </div>
-</body>
-</html>
-{% endblock content %}
+    <p class="mt-3 small">© 2025 Paloma Comércio | Desenvolvido por José Genilson</p>
+</footer>
+{% endblock %}
+

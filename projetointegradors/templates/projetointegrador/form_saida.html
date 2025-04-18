@@ -1,45 +1,167 @@
 {% extends 'projetointegrador/base.html' %}
 
-
 {% block content %}
 <style>
-    
-    /* Estiliza o formulário para remover margem entre os parágrafos */
-    form {
-        margin-left: 30px; /* Margem à esquerda para o formulário */
-    }
-    /* Remove a margem inferior dos parágrafos dentro do formulário */
-    form {
-        margin-bottom: 5px; /* Ajuste o valor conforme necessário */
-    }
-    /* Estilo para o ícone */
-    .title-icon {
-        margin-right: 5px; /* Margem à direita para separar o ícone do texto */
-        color: #007bff; /* Cor do ícone (azul) */
+    .form-section {
+        padding: 30px;
+        max-width: 1000px;
+        margin: auto;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
+    .form-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #343a40;
+        font-weight: 600;
+        margin-bottom: 25px;
+    }
+
+    .form-title i {
+        color: #198754;
+    }
+
+    .btn-group-custom {
+        display: flex;
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    .produto-card {
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .produto-info {
+        font-size: 0.95rem;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        max-width: 200px;
+    }
+
+    .quantity-control input[type="number"] {
+        width: 60px;
+        text-align: center;
+    }
+
+    .quantity-control button {
+        padding: 4px 10px;
+    }
+
+    .search-bar {
+        margin-bottom: 25px;
+    }
+
+    .search-bar input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+    }
 </style>
 
-<body>
-    <h3 class="ms-3" style="margin-left: 20px">Registro de Nova Saída<i class="fas fa-check-circle title-icon"></i> <!-- Ícone (por exemplo, um círculo de verificação) --></h3>
-    <div class="formulario">
-        <div class="table-responsive ml-3 mb-3" style="max-height: 400px;">
-                <thead class="table-dark">
-                    <form class="ml-3 align-items-center" method="post" class="row g-4" style="margin-left: 20px">
-                        <div>
-                            {% csrf_token %}
-                            {{ form.as_p }}
-                        </div>
+<div class="form-section">
+    <h3 class="form-title">
+        <i class="fas fa-box-open"></i> Registro de Nova Saída
+    </h3>
 
-                        <button type="submit" class="btn btn-primary btn-sm">Registrar Saída</button>
-                        <a href="{% url 'lista_produtos' %}" class="btn btn-success btn-sm" style="width: 150px; height: 30px;">Lista de Produtos</a>
-                    </form>
-                    
-                
-                </thead>
-            </table>
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Campo de observação -->
+        <div class="mb-4">
+            <label for="{{ form.observacao.id_for_label }}" class="form-label">Observação</label>
+            {{ form.observacao }}
+            {% for error in form.observacao.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
         </div>
-    </div>
-</body>
+
+        <!-- Campo de busca -->
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="🔍 Buscar por nome, modelo ou código...">
+        </div>
+
+        <!-- Produtos -->
+        <div id="produtos-container">
+            {% for field in form %}
+                {% if field.name != "observacao" %}
+                    <div class="produto-card" data-search="{{ field.label|lower }}">
+                        <div class="produto-info">
+                            <strong>{{ field.label }}</strong><br>
+                            <small>Quantidade disponível: {{ field.field.max_value }}</small>
+                        </div>
+                        <div class="quantity-control">
+                            <button type="button" class="btn btn-outline-secondary btn-sm decrement">−</button>
+                            {{ field }}
+                            <button type="button" class="btn btn-outline-secondary btn-sm increment">+</button>
+                        </div>
+                        {% for error in field.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="btn-group-custom">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Registrar Saída
+            </button>
+            <a href="{% url 'lista_produtos' %}" class="btn btn-outline-success">
+                <i class="fas fa-list"></i> Lista de Produtos
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Filtro de produtos
+    const searchInput = document.getElementById("search");
+    const cards = document.querySelectorAll(".produto-card");
+
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value.toLowerCase();
+        cards.forEach(card => {
+            const searchValue = card.getAttribute("data-search");
+            card.style.display = searchValue.includes(query) ? "block" : "none";
+        });
+    });
+
+    // Incremento e decremento de quantidade
+    document.querySelectorAll(".produto-card").forEach(card => {
+        const input = card.querySelector("input[type='number']");
+        const increment = card.querySelector(".increment");
+        const decrement = card.querySelector(".decrement");
+
+        increment.addEventListener("click", () => {
+            let value = parseInt(input.value) || 0;
+            if (value < input.max) {
+                input.value = value + 1;
+            }
+        });
+
+        decrement.addEventListener("click", () => {
+            let value = parseInt(input.value) || 0;
+            if (value > 0) {
+                input.value = value - 1;
+            }
+        });
+    });
+</script>
 {% endblock content %}
+
+
 

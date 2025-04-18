@@ -1,14 +1,95 @@
 {% extends 'projetointegrador/base.html' %}
 
-
 {% block content %}
-<h2>Listas de Saída</h2>
-<ul>
-{% for saida in saidas %}
-    <li><a href="{% url 'detalhes_saida' pk=saida.pk %}">{{ saida.data_saida }}</a></li>
-{% empty %}
-    <li>Nenhuma saída registrada ainda.</li>
-{% endfor %}
-</ul>
-<a href="{% url 'adicionar_saida' %}">Adicionar Saída</a>
-{% endblock content %}
+<style>
+    body {
+        background-color: #f5f7fa;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    h2 {
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: #1D3557;
+        margin-bottom: 30px;
+    }
+
+    .saida-lista {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .saida-item {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.3s ease;
+    }
+
+    .saida-item:hover {
+        background-color: #F1FAEE;
+    }
+
+    .saida-item a {
+        font-size: 1.1rem;
+        color: #2A9D8F;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .saida-item a:hover {
+        color: #264653;
+    }
+
+    .adicionar-saida {
+        display: inline-block;
+        background-color: #F4A261;
+        color: white;
+        padding: 12px 20px;
+        font-size: 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        margin-top: 30px;
+    }
+
+    .adicionar-saida:hover {
+        background-color: #E76F51;
+    }
+
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 1.8rem;
+        }
+
+        .adicionar-saida {
+            width: 100%;
+            text-align: center;
+            padding: 12px 0;
+        }
+    }
+</style>
+
+<h2>Criar Saida</h2>
+
+{% if saidas %}
+    <ul class="saida-lista">
+        {% for saida in saidas %}
+            <li class="saida-item">
+                <a href="{% url 'detalhes_saida' pk=saida.pk %}">{{ saida.data_saida }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Nenhuma saída registrada ainda.</p>
+{% endif %}
+
+<a href="{% url 'adicionar_saida' %}" class="adicionar-saida">Adicionar Saída</a>
+
+{% endblock %}

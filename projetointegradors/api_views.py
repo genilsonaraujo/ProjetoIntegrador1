@@ -4,6 +4,7 @@ from rest_framework import status
 from .models import Produto, Saida 
 from .serializers import ProdutoSerializer, SaidaSerializer 
 from django.http import Http404
+from rest_framework.decorators import api_view
 
 class ProdutoListCreateAPIView(generics.ListCreateAPIView):
     queryset = Produto.objects.all()
@@ -66,7 +67,13 @@ class SaidaDetail(generics.RetrieveUpdateDestroyAPIView):
         saida.delete()  # Exclui a saída do banco de dados
         return Response(status=status.HTTP_204_NO_CONTENT)  # Retorna resposta 204 No Content
     
-
+def buscar_produto_por_codigo(request, codigo_barras):
+    try:
+        produto = Produto.objects.get(codigo_barras=codigo_barras)
+        serializer = ProdutoSerializer(produto)
+        return Response(serializer.data, status=200)  # Retorna os detalhes do produto
+    except Produto.DoesNotExist:
+        return Response({"message": "Produto não encontrado"}, status=404)  # Retorna erro 404 se não existir
 
 
 

@@ -255,6 +255,8 @@ def busca_produtos(request):
     produtos = Produto.objects.all()
 
     if form.is_valid():
+        if form.cleaned_data['codigo_barras']:
+            produtos = produtos.filter(codigo_barras__icontains=form.cleaned_data['codigo_barras'])
         if form.cleaned_data['categoria']:
             produtos = produtos.filter(categoria__icontains=form.cleaned_data['categoria'])
         if form.cleaned_data['marca']:
