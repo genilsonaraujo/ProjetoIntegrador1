@@ -65,8 +65,9 @@ MIDDLEWARE = [
 ]
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',  # URL da aplicação React
-    'http://192.168.15.9:8000',
-    'http://localhost:8000',
+    'http://192.168.15.9:8000',# IP local da sua máquina para o ESP32
+    'http://localhost:8000',    # Para o navegador local (se estiver acessando via localhost)
+    'http://127.0.0.1:8000',     # Outra alternativa para o navegador
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://192.168.15.9:8000",

@@ -18,11 +18,12 @@ Including another URLconf
 from django.urls import path, include
 from . import views
 from rest_framework.routers import DefaultRouter
-from .api_views import ProdutoListCreateAPIView, ProdutoDetailAPIView, SaidaList, SaidaDetail, buscar_produto_por_codigo
+from .api_views import ProdutoListCreateAPIView, ProdutoDetailAPIView, SaidaList, SaidaDetail, buscar_produto_por_codigo, ProdutoBuscaAPIView
 #from .views import lista_produtos, cria_produto
 from django.conf import settings
 from django.conf.urls.static import static
-#from .views import busca_produtos
+#from .views import buscar_produtos
+
 
 
 
@@ -49,6 +50,13 @@ urlpatterns = [ #ROTAS
     path('produte/<int:pk>/', ProdutoDetailAPIView.as_view(), name='produto-detail'),#rota produto id
     path('saidas/', SaidaList.as_view(), name='saida-list'),
     path('saidas/<int:pk>/', SaidaDetail.as_view(), name='saida-detail'),
+    #path('api/produtos/busca/', ProdutoBuscaAPIView.as_view(), name='api-busca-produtos'),
+    path('produtos/busca/', views.buscar_produtos, name='buscar_produtos'),
+
+    path('produtos/leitor/', views.leitor_view, name='leitor_view'),#scanner
+    path('scanner-redirect/', views.redirecionar_para_busca, name='scanner_redirect'),
+    #path('produtos/busca/', views.buscar_produto_por_codigo, name='buscar_produto_por_codigo'),#funcao tentativa de alterar o template com o get do ultimo scaneio
+
 
     path('produte/<str:codigo_barras>/', buscar_produto_por_codigo, name='buscar-produto'),
 

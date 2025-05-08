@@ -1,0 +1,116 @@
+{% extends 'projetointegrador/base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f5f7fa;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    h2 {
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: #1D3557;
+        margin-bottom: 30px;
+    }
+
+    .produto-lista {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .produto-item {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .produto-info {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .produto-info span {
+        font-weight: 600;
+    }
+
+    .produto-item a {
+        text-decoration: none;
+        background-color: #2A9D8F;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        margin-top: 15px;
+        transition: background-color 0.3s;
+    }
+
+    .produto-item a:hover {
+        background-color: #1A6B62;
+    }
+
+</style>
+<h1>Buscar Produto por Código de Barras</h1>
+
+<form method="get" action="{% url 'buscar_produtos' %}">
+    <input type="text" name="codigo_barras" id="codigoInput" placeholder="Escaneie o código aqui" value="{{ codigo_barras }}" autofocus />
+    <button type="submit" style="padding:10px 20px; font-size:1rem; background:#1D3557; color:white; border:none; border-radius:5px;"></button>
+</form>
+
+<form action="/produtos/busca/" method="get">
+    <input type="text" name="codigo_barras" autofocus placeholder="Escaneie aqui">
+</form>
+
+
+<h2>Resultado da Busca - Código de Barras: {{ request.GET.codigo_barras }}</h2>
+<p>Total de produtos: {{ produtos|length }}</p>
+
+{% if produtos %}
+    <ul class="produto-lista">
+        {% for produto in produtos %}
+            <li class="produto-item">
+                <div class="produto-info">
+                    <p><span>Código de Barras:</span> {{ produto.codigo_barras }}</p>
+                    <p><span>Nome:</span> {{ produto.nome }}</p>
+                    <p><span>Categoria:</span> {{ produto.categoria }}</p>
+                    <p><span>Marca:</span> {{ produto.marca }}</p>
+                    <p><span>Modelo:</span> {{ produto.modelo }}</p>
+                    <p><span>Código:</span> {{ produto.codigo }}</p>
+                    <p><span>SKU:</span> {{ produto.sku }}</p>
+                    <p><span>Preço:</span> R$ {{ produto.preco }}</p>
+                    <p><span>Quantidade:</span> {{ produto.quantidade }}</p>
+                </div>
+                <a href="{% url 'editar_produto' produto.id %}">Editar Produto</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Nenhum produto encontrado para o código de barras: {{ request.GET.codigo_barras }}.</p>
+{% endif %}
+<a href="{% url 'buscar_produtos' %}?codigo_barras={{ request.session.codigo_barras }}">Ir para a última busca</a>
+
+
+
+{% endblock %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById('codigoInput');
+        
+        // Quando o código de barras for escaneado e o campo for alterado, redireciona
+        input.addEventListener('input', function () {
+            const codigo = this.value.trim();
+            
+            // Se o código não estiver vazio, redireciona para a URL com o código
+            if (codigo) {
+                window.location.href = `/produtos/busca/?codigo_barras=${codigo}`;
+            }
+        });
+    
+        // Foca no campo de entrada assim que a página carregar
+        input.focus();
+    });
+    </script>

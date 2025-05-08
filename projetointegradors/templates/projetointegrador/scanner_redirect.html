@@ -1,0 +1,16 @@
+{% extends 'projetointegrador/base.html' %}
+
+{% block content %}
+<h2>Redirecionando...</h2>
+<p>Aguarde enquanto buscamos o produto com o código de barras: <strong>{{ codigo_barras }}</strong></p>
+
+<script>
+    const codigo = "{{ codigo_barras }}";
+
+    if (codigo) {
+        window.location.href = `/produtos/busca/?codigo_barras=${codigo}`;
+    } else {
+        document.body.innerHTML = "<p>Nenhum código de barras recebido.</p>";
+    }
+</script>
+{% endblock %}

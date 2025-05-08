@@ -5,6 +5,7 @@ from .models import Produto, Saida
 from .serializers import ProdutoSerializer, SaidaSerializer 
 from django.http import Http404
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 
 class ProdutoListCreateAPIView(generics.ListCreateAPIView):
     queryset = Produto.objects.all()
@@ -77,7 +78,32 @@ def buscar_produto_por_codigo(request, codigo_barras):
 
 
 
+class ProdutoBuscaAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        produtos = Produto.objects.all()
+        params = request.query_params
 
+        if params.get('codigo_barras'):
+            produtos = produtos.filter(codigo_barras__icontains=params.get('codigo_barras'))
+        if params.get('categoria'):
+            produtos = produtos.filter(categoria__icontains=params.get('categoria'))
+        if params.get('marca'):
+            produtos = produtos.filter(marca__icontains=params.get('marca'))
+        if params.get('nome'):
+            produtos = produtos.filter(nome__icontains=params.get('nome'))
+        if params.get('modelo'):
+            produtos = produtos.filter(modelo__icontains=params.get('modelo'))
+        if params.get('codigo'):
+            produtos = produtos.filter(codigo__icontains=params.get('codigo'))
+        if params.get('sku'):
+            produtos = produtos.filter(sku__icontains=params.get('sku'))
+        if params.get('preco_min'):
+            produtos = produtos.filter(preco__gte=params.get('preco_min'))
+        if params.get('preco_max'):
+            produtos = produtos.filter(preco__lte=params.get('preco_max'))
+
+        serializer = ProdutoSerializer(produtos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 

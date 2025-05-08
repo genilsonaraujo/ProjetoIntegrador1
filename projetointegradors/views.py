@@ -6,6 +6,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required#permite so quem estiver logado ter acesso as viwes
 from django.views.decorators.csrf import csrf_exempt
+import requests
+
 # Create your views here.
 def index(request): #pega o as informaçoes e renderiza numa pagina html
     """Pagina principal do Projetointegradors"""
@@ -275,3 +277,114 @@ def busca_produtos(request):
             produtos = produtos.filter(preco__lte=form.cleaned_data['preco_max'])
 
     return render(request, 'projetointegrador/busca.produtos.html', {'form': form, 'produtos': produtos})
+
+def buscar_produto(request):
+    # Se o formulário foi enviado (GET)
+    codigo_barras = request.GET.get('codigo_barras', None)
+
+    if codigo_barras:
+        # Montar a URL para a API de busca de produtos
+        api_url = f'http://192.168.15.9:8000/api/produtos/busca/?codigo_barras={codigo_barras}'
+        
+        # Fazer a requisição GET à API
+        response = requests.get(api_url)
+        
+        if response.status_code == 200:
+            produtos = response.json()  # Aqui você obtém os produtos da resposta JSON
+        else:
+            produtos = []
+
+    else:
+        produtos = []
+
+    # Passar os produtos para o contexto do template
+    return render(request, 'busca.produtos.html', {'produtos': produtos})
+
+
+#def buscar_produtos(request):
+    # Obtendo o código de barras da requisição GET
+    #codigo_barras = request.GET.get('codigo_barras', None)
+    #produtos = []
+    #print(f"Recebido código de barras: {codigo_barras}")  # Depuração
+    # Filtra os produtos pela chave 'codigo_barras', se fornecido
+           #produtos = Produto.objects.all()
+           #if codigo_barras:
+           #produtos = produtos.filter(codigo_barras=codigo_barras)
+    # Se o código de barras for fornecido, realiza a busca
+    #if codigo_barras:
+        #produtos = Produto.objects.filter(codigo_barras=codigo_barras)
+    # Passa os produtos encontrados para o template
+    #return render(request, 'projetointegrador/busca.produtos.html', {
+       # 'produtos': produtos
+    #})
+def buscar_produtos(request):
+    # Obtém o código de barras da requisição GET
+    codigo_barras = request.GET.get('codigo_barras', '')
+    
+    if codigo_barras:
+        # Busca produtos com o código de barras exato
+        produtos = Produto.objects.filter(codigo_barras=codigo_barras)
+        print(f"Código recebido: {codigo_barras} - Produtos encontrados: {produtos.count()}")
+        
+        if produtos.exists():
+            # Se encontrar, renderiza os produtos encontrados
+            return render(request, 'projetointegrador/produtos.busca.html', {
+                'produtos': produtos,
+                'codigo_barras': codigo_barras,
+                'mensagem': f"{produtos.count()} produto(s) encontrado(s) com o código de barras {codigo_barras}."
+            })
+        else:
+            # Se não encontrar, exibe uma mensagem de erro
+            return render(request, 'projetointegrador/produtos.busca.html', {
+                'produtos': [],
+                'codigo_barras': codigo_barras,
+                'erro': 'Nenhum produto encontrado com esse código de barras.'
+            })
+    else:
+        # Caso não tenha código de barras fornecido, exibe um erro
+        return render(request, 'projetointegrador/produtos.busca.html', {
+            'produtos': [],
+            'codigo_barras': '',
+            'erro': 'Por favor, insira um código de barras para buscar.'
+        })
+
+def leitor_view(request):
+    return render(request, 'projetointegrador/scanner.html')
+
+#def redirecionar_para_busca(request):
+    #codigo_barras = request.GET.get('codigo_barras')
+    #return render(request, 'projetointegrador/scanner_redirect.html', {
+        #'codigo_barras': codigo_barras
+    #})
+def redirecionar_para_busca(request):
+    codigo_barras = request.GET.get('codigo_barras')
+    return redirect(f'/produtos/busca/?codigo_barras={codigo_barras}')
+
+#funcao tentativa de alterar o template com o get do ultimo scaneio
+def buscar_produto_por_codigo(request):
+    codigo_barras = request.GET.get('codigo_barras', '').strip()  # Remove espaços extras
+
+    if codigo_barras:
+        # Armazena o código de barras na sessão
+        request.session['codigo_barras'] = codigo_barras
+        
+        # Realiza a busca no banco de dados
+        produtos = Produto.objects.filter(codigo_barras=codigo_barras)
+
+        if produtos.exists():
+            return render(request, 'projetointegrador/produtos.busca.html', {
+                'produtos': produtos,
+                'codigo_barras': codigo_barras
+            })
+        else:
+            return render(request, 'projetointegrador/produtos.busca.html', {
+                'produtos': [],
+                'codigo_barras': codigo_barras,
+                'erro': 'Nenhum produto encontrado com esse código de barras.'
+            })
+    else:
+        return render(request, 'projetointegrador/produtos.busca.html', {
+            'produtos': [],
+            'codigo_barras': '',
+            'erro': 'Por favor, insira um código de barras válido.'
+        })

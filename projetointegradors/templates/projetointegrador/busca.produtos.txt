@@ -20,16 +20,6 @@
         padding: 20px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 30px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    form input[type="text"] {
-        padding: 10px;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 6px;
     }
 
     form button {
@@ -97,10 +87,10 @@
     }
 </style>
 
-<h2>Buscar Produtos por Código de Barras</h2>
+<h2>Buscar Produtos</h2>
 
 <form method="get" class="search-form">
-    <input type="text" name="codigo_barras" placeholder="Digite ou escaneie o código de barras" required>
+    {{ form.as_p }}
     <button type="submit">Buscar</button>
 </form>
 
@@ -109,7 +99,7 @@
         {% for produto in produtos %}
             <li class="produto-item">
                 <div class="produto-info">
-                    <p><span>Código de Barras:</span> {{ produto.codigo_barras }}</p>
+                    <p><span>Codigo de Barra:</span> {{ produto.codigo_barras }}</p>
                     <p><span>Nome:</span> {{ produto.nome }}</p>
                     <p><span>Categoria:</span> {{ produto.categoria }}</p>
                     <p><span>Marca:</span> {{ produto.marca }}</p>
@@ -127,4 +117,5 @@
     <p>Nenhum produto encontrado.</p>
 {% endif %}
 {% endblock %}
+
 

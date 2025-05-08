@@ -1,0 +1,48 @@
+{% extends 'projetointegrador/base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f0f2f5;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #1D3557;
+    }
+
+    #codigoInput {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+</style>
+
+<h2>Leitor de Código de Barras</h2>
+
+<input type="text" id="codigoInput" placeholder="Escaneie o código de barras aqui" autofocus />
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById('codigoInput');
+
+    input.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const codigo = input.value.trim();
+            if (codigo) {
+                // Redireciona automaticamente para a página de busca com o código escaneado
+                window.location.href = `/produtos/busca/?codigo_barras=${codigo}`;
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
+
+
