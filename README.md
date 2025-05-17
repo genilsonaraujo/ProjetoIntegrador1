@@ -1,6 +1,6 @@
 # Gerenciador de Estoque 
 
-![Lista de Produtos](projetointegradors/static/lista.png)
+![Lista de Produtos](projetointegradors/static/lista.jpg)
 
 ## Overview
 
